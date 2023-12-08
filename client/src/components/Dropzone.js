@@ -46,7 +46,7 @@ const Dropzone = ({ className }) => {
       })
       .catch(function (error) {console.error('Error saving result:', error.response.data)});
     
-    setUploadedFile(file);
+    setUploadedFile(file.name);
     removeFile();
   };
 
@@ -87,7 +87,7 @@ const Dropzone = ({ className }) => {
       </section>
     </form>
     <div className='currentSetting'>
-          Song: <strong>{uploadedFile.name}</strong>
+          Song: <strong>{uploadedFile}</strong>
         </div>
         </div>
   );

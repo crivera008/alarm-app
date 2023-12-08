@@ -35,7 +35,7 @@ app.post('/alarm', (req, res) => {
 });
 
 app.post('/wav', (req, res) => {
-    currFile = req.body.wav;
+    currFile = req.body.wav.path;
     console.log(currFile);
     message = 'WAV file saved successfully: ' + currFile
     res.send(message);
