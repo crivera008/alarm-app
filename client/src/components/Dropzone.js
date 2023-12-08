@@ -1,11 +1,18 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import './Dropzone.css';
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import axios from 'axios';
 
 const Dropzone = ({ className }) => {
   const [file, setFile] = useState();
   const [uploadedFile, setUploadedFile] = useState('');
+
+  useEffect(() => {
+    axios.get('/all-settings')
+    .then(response => setUploadedFile(response.data.wav))
+    .catch(error => console.error('Error fetching result: ', error));
+}, []);
 
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles?.length) {
@@ -33,7 +40,11 @@ const Dropzone = ({ className }) => {
 
     console.log(file);
 
-    // POST REQ HERE
+    axios.post('/wav', { wav: file })
+      .then(function (response) {
+        console.log("here: " + response.data);
+      })
+      .catch(function (error) {console.error('Error saving result:', error.response.data)});
     
     setUploadedFile(file);
     removeFile();

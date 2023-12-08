@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require("express");
 const bodyParser = require("body-parser");
+const { fileURLToPath } = require('url');
 
 const PORT = process.env.PORT || 3001;
 
@@ -10,12 +11,13 @@ app.use(bodyParser.json());
 
 var currAlarm = "";
 var currSnooze = 10;
-var wav = "wavywav";
+var currFile = "";
 
 app.get('/all-settings', (req, res) => {
     res.json({
         alarm: currAlarm,
-        snooze: currSnooze
+        snooze: currSnooze,
+        wav: currFile
     });
   });
 
@@ -29,6 +31,13 @@ app.post('/alarm', (req, res) => {
     currAlarm = req.body.alarm;
     console.log(currAlarm);
     message = 'Alarm time saved successfully: ' + currAlarm
+    res.send(message);
+});
+
+app.post('/wav', (req, res) => {
+    currFile = req.body.wav;
+    console.log(currFile);
+    message = 'WAV file saved successfully: ' + currFile
     res.send(message);
 });
 

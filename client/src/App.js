@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dropzone from "./components/Dropzone.js";
 import Popup from 'react-popup';
 import axios from 'axios';
@@ -10,7 +10,7 @@ function App() {
   const [alarmTime, setAlarmTime] = useState('')
   const [snoozeDuration, setSnoozeDuration] = useState(10)
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get('/all-settings')
     .then(response => {setSnoozeDuration(response.data.snooze);
     setAlarmTime(response.data.alarm);})
