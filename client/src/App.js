@@ -25,10 +25,10 @@ function App() {
   }
 
   const handleSubmit = () => {
-    axios.post('/snooze', { snooze: snoozeDuration })
+    setSnoozeDuration(currSnooze);
+    axios.post('/snooze', { snooze: currSnooze })
       .then(function (response) {
         console.log(response.data);
-        setSnoozeDuration(currSnooze);
       })
       .catch(function (error) {console.error('Error saving result:', error.response.data)});
   }
@@ -36,18 +36,6 @@ function App() {
   const handleSetAlarm = async () => {
     if (!tooSoon()) {
       setAlarmTime(currAlarm)
-      try {
-        const response = await fetch('http://localhost:3001/api/alarm', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ currAlarm }),
-        });
-      } catch (error) {
-        console.error('Error saving alarm time:', error);
-      }
-      console.log(currAlarm)
     } else {
       Popup.alert('Alarm time cannot be in the next 10 minutes!')
     }

@@ -1,13 +1,15 @@
 const path = require('path');
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(bodyParser.json());
 
 var currAlarm = "15:20";
-var currSnooze = 5;
+var currSnooze = '';
 var wav = "wavywav";
 
 app.get('/all-settings', (req, res) => {
@@ -17,9 +19,10 @@ app.get('/all-settings', (req, res) => {
   });
 
 app.post('/snooze', (req, res) => {
-    const snooze = req.body;
-    console.log('Snooze time: ', snooze);
-    res.send('Snooze time saved successfully');
+    currSnooze = parseInt(req.body.snooze);
+    console.log(currSnooze);
+    message = 'Snooze time saved successfully: ' + currSnooze
+    res.send(message);
 });
 
 app.get('*', (req, res) => {
