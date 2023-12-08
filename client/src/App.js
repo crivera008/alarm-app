@@ -12,8 +12,9 @@ function App() {
 
   React.useEffect(() => {
     axios.get('/all-settings')
-    .then(response => setSnoozeDuration(response.data.snooze))
-    .catch(error => console.error('Error fetching result:', error));
+    .then(response => {setSnoozeDuration(response.data.snooze);
+    setAlarmTime(response.data.alarm);})
+    .catch(error => console.error('Error fetching result: ', error));
 }, []);
 
   const handleTimeChange = (e) => {
@@ -36,6 +37,11 @@ function App() {
   const handleSetAlarm = async () => {
     if (!tooSoon()) {
       setAlarmTime(currAlarm)
+      axios.post('/alarm', { alarm: currAlarm })
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {console.error('Error saving result:', error.response.data)});
     } else {
       Popup.alert('Alarm time cannot be in the next 10 minutes!')
     }
@@ -90,7 +96,7 @@ function App() {
         />
       <button onClick={handleSetAlarm}>Set</button>
       </div>
-          <p id="alarm">Alarm: <strong>{alarmTime ?  calcTime(alarmTime) : 'No alarm set!'}</strong></p>
+          <p id="alarm">Alarm: <strong>{alarmTime ? calcTime(alarmTime) : "No alarm set!"}</strong></p>
         </div>
         <div className='card'>
           <p className='smallText'>SONG SELECTION</p>
