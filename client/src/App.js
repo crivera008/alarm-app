@@ -2,20 +2,19 @@ import './App.css';
 import React, { useState } from "react";
 import Dropzone from "./components/Dropzone.js";
 import Popup from 'react-popup';
+import axios from 'axios';
 
 function App() {
-  const [data, setData] = React.useState(null)
   const [currSnooze, setCurrSnooze] = useState(0)
   const [currAlarm, setCurrAlarm] = useState('')
   const [alarmTime, setAlarmTime] = useState('')
   const [snoozeDuration, setSnoozeDuration] = useState(10)
 
   React.useEffect(() => {
-    fetch('/all-settings')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data.alarm)})
-  }, [])
+    axios.get('/all-settings')
+    .then(response => setSnoozeDuration(response.data.snooze))
+    .catch(error => console.error('Error fetching result:', error));
+}, []);
 
   const handleTimeChange = (e) => {
     setCurrAlarm(e.target.value)
@@ -26,7 +25,12 @@ function App() {
   }
 
   const handleSubmit = () => {
-    setSnoozeDuration(currSnooze)
+    axios.post('/snooze', { snooze: snoozeDuration })
+      .then(function (response) {
+        console.log(response.data);
+        setSnoozeDuration(currSnooze);
+      })
+      .catch(function (error) {console.error('Error saving result:', error.response.data)});
   }
 
   const handleSetAlarm = async () => {
@@ -83,7 +87,6 @@ function App() {
     <div className='page'>
       <Popup />
       <div className='top'>
-        <p>{!data ? "Loading..." : data}</p>
         <p className='smallText' id='top'>NEXT WAKE UP...</p>
         <p className='biggestText'>{alarmTime ? calcTime(alarmTime) : 'None'}</p>
       </div>

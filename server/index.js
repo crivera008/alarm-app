@@ -8,20 +8,18 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 var currAlarm = "15:20";
 var currSnooze = 5;
-var wav = "wavywav"
+var wav = "wavywav";
 
 app.get('/all-settings', (req, res) => {
     res.json({
-        alarm: currAlarm, 
-        snooze: currSnooze, 
-        file: wav
+        snooze: currSnooze
     });
   });
 
-app.post('/api/alarm', (req, res) => {
-    const { selectedTime } = req.body;
-    console.log('Selected Time:', selectedTime);
-    res.json({ success: true }); // Respond with a success message
+app.post('/snooze', (req, res) => {
+    const snooze = req.body;
+    console.log('Snooze time: ', snooze);
+    res.send('Snooze time saved successfully');
 });
 
 app.get('*', (req, res) => {
