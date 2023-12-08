@@ -1,0 +1,20 @@
+.box {
+    background-color: rgb(245, 245, 245);
+    border: 2px rgb(209, 209, 209) dotted;
+    margin: 0 8% 3% 8%;
+    padding: 3% 5% 2%;
+    font-size: 1rem;
+    font-family: 'Hind';
+    cursor: pointer;
+}
+
+.box p {
+    margin-top: 0;
+}
+
+.delete {
+    padding: 5px;
+    margin-left: 10px;
+    line-height: 0.6;
+    font-family: 'Hind';
+}
