@@ -1,6 +1,5 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import Dropzone from "./components/Dropzone.js";
 import Popup from 'react-popup';
 import axios from 'axios';
 
@@ -9,11 +8,17 @@ function App() {
   const [currAlarm, setCurrAlarm] = useState('')
   const [alarmTime, setAlarmTime] = useState('')
   const [snoozeDuration, setSnoozeDuration] = useState(10)
+  const [file, setFile] = useState()
+  const [tempFileName, setTemp] = useState()
+  const [uploadedFile, setUploadedFile] = useState()
 
   useEffect(() => {
     axios.get('/all-settings')
-    .then(response => {setSnoozeDuration(response.data.snooze);
-    setAlarmTime(response.data.alarm);})
+    .then(response => {
+      setSnoozeDuration(response.data.snooze);
+      setAlarmTime(response.data.alarm);
+      setUploadedFile(response.data.songname);
+  })
     .catch(error => console.error('Error fetching result: ', error));
 }, []);
 
@@ -45,6 +50,16 @@ function App() {
     } else {
       Popup.alert('Alarm time cannot be in the next 10 minutes!')
     }
+  }
+
+  const upload = () => {
+    console.log("FORM DATA: " + tempFileName);
+    const formData = new FormData()
+    formData.append('file', file)
+    axios.post('/upload', formData )
+    .then(response => console.log("Wav: " + response.data))
+    .catch(error => console.error('Error saving result:', error.response.data));
+    setUploadedFile(tempFileName);
   }
 
   function calcTime(time) {
@@ -100,7 +115,11 @@ function App() {
         </div>
         <div className='card'>
           <p className='smallText'>SONG SELECTION</p>
-          <Dropzone/>
+          <input id="wavSelect" type="file" accept='audio/wav' onChange={(e) => {setFile(e.target.files[0]); setTemp(e.target.value.replace(/.*[\/\\]/, ''));}}></input>
+          <button type="button" onClick={upload}>Upload</button>
+          <div className='currentSetting'>
+          Current song: <strong>{uploadedFile}</strong>
+        </div>
         </div>
         <div className='card'>
           <p className='smallText'>SNOOZE DURATION</p>

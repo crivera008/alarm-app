@@ -179,3 +179,13 @@ button {
 .mm-popup__box__body p {
     margin: 0 0 5px;
 }
+
+#wavSelect {
+  background-color: rgb(245, 245, 245);
+  border: 1px rgb(209, 209, 209) solid;
+  width: 70%;
+  margin: 0 8% 3% 8%;
+  padding: 5% 4%;
+  font-size: 0.9rem;
+  font-family: 'Hind';
+}
