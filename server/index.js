@@ -46,11 +46,36 @@ var weather_code;
 var max_temp;
 var min_temp;
 
-app.get('/all-settings', (req, res) => {
+function in_seconds(time) {
+    var [hours, minutes] = time.split(':');
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+    const d = new Date();
+    var currDay = d.getDate();
+    const currHour = d.getHours();
+    const currMin = d.getMinutes();
+    if (hours < currHour || (hours == currHour && minutes < currMin)) {
+        currDay += 1;
+    }
+    var d2 = new Date(d.getFullYear(), d.getMonth(), currDay, hours, minutes, 00, 00); 
+    return Math.floor(d2 / 1000);
+}
+
+app.get('/all-settings-user', (req, res) => {
+    console.log(in_seconds(currAlarm));
     res.json({
         alarm: currAlarm,
         snooze: currSnooze,
         songname: currFileName
+    });
+  });
+
+app.get('/all-settings', (req, res) => {
+    res.json({
+        alarm: in_seconds(currAlarm),
+        snooze: currSnooze,
+        songname: currFileName,
+        secs: Math.floor(Date.now() / 1000)
     });
   });
 

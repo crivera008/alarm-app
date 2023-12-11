@@ -13,7 +13,7 @@ function App() {
   const [uploadedFile, setUploadedFile] = useState()
 
   useEffect(() => {
-    axios.get('/all-settings')
+    axios.get('/all-settings-user')
     .then(response => {
       setSnoozeDuration(response.data.snooze);
       setAlarmTime(response.data.alarm);
