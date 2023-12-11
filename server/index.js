@@ -1,3 +1,4 @@
+const axios = require('axios');
 const path = require('path');
 const express = require("express");
 const cors = require('cors');
@@ -41,12 +42,30 @@ app.use(bodyParser.json());
 var currAlarm = "";
 var currSnooze = 10;
 var currFileName = "";
+var weather_code;
+var max_temp;
+var min_temp;
 
 app.get('/all-settings', (req, res) => {
     res.json({
         alarm: currAlarm,
         snooze: currSnooze,
         songname: currFileName
+    });
+  });
+
+app.get('/weather', (req, res) => {
+    const url = "http://api.open-meteo.com/v1/forecast?latitude=41.82682&longitude=-71.402931&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1";
+    axios.get(url).then(response => {
+        weather_code = response.data.daily.weather_code[0];
+        max_temp = response.data.daily.temperature_2m_max[0];
+        min_temp = response.data.daily.temperature_2m_min[0];
+    })
+    .catch(error => console.error('Error retrieving weather data: ', error));
+    res.json({
+        code: weather_code,
+        max: max_temp,
+        min: min_temp
     });
   });
 
