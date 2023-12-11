@@ -62,7 +62,6 @@ function in_seconds(time) {
 }
 
 app.get('/all-settings-user', (req, res) => {
-    console.log(in_seconds(currAlarm));
     res.json({
         alarm: currAlarm,
         snooze: currSnooze,
