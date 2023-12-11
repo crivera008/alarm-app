@@ -48,16 +48,19 @@ var min_temp;
 
 function in_seconds(time) {
     var [hours, minutes] = time.split(':');
-    hours = parseInt(hours);
-    minutes = parseInt(minutes);
+    hours2 = parseInt(hours);
+    minutes2 = parseInt(minutes);
     const d = new Date();
     var currDay = d.getDate();
     const currHour = d.getHours();
     const currMin = d.getMinutes();
-    if (hours < currHour || (hours == currHour && minutes < currMin)) {
+    if (hours2 < currHour || (hours2 == currHour && minutes2 < currMin)) {
         currDay += 1;
     }
-    var d2 = new Date(d.getFullYear(), d.getMonth(), currDay, hours, minutes, 00, 00); 
+    month = d.getMonth() + 1
+    var date_string = d.getFullYear() + "-" + month + "-" + currDay + "T" + hours + ":" + minutes + ":00.000-05:00"
+    console.log(date_string);
+    var d2 = new Date(date_string); 
     return Math.floor(d2 / 1000);
 }
 
