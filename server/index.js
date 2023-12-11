@@ -45,6 +45,7 @@ var currFileName = "";
 var weather_code;
 var max_temp;
 var min_temp;
+var bpm = 100;
 
 function in_seconds(time) {
     var [hours, minutes] = time.split(':');
@@ -68,7 +69,7 @@ app.get('/all-settings-user', (req, res) => {
     res.json({
         alarm: currAlarm,
         snooze: currSnooze,
-        songname: currFileName
+        songname: currFileName,
     });
   });
 
@@ -77,7 +78,8 @@ app.get('/all-settings', (req, res) => {
         alarm: in_seconds(currAlarm),
         snooze: currSnooze,
         songname: currFileName,
-        secs: Math.floor(Date.now() / 1000)
+        secs: Math.floor(Date.now() / 1000),
+        bpm: bpm
     });
   });
 
